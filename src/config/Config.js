@@ -12,6 +12,9 @@ const APIs = {
     FOURSQUARE: {
         clientId: "",
         clientSecret: ""
+    },
+    GOOGLE_MAPS: {
+        key: ""
     }
 };
 

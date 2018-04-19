@@ -11,6 +11,7 @@ import { Actions } from './definitions/Actions';
 
 import { init as SystemControllerInit } from './controllers/SystemController';
 import * as FourSquareService from './services/FourSquareService';
+import * as GoogleMapsService from './services/GoogleMapsService';
 const PubSub = require("pubsub-js");
 
 SystemControllerInit();
@@ -46,7 +47,14 @@ window.init = ( config ) => {
 
     APIs.FOURSQUARE.clientId     = config.fsClientId;
     APIs.FOURSQUARE.clientSecret = config.fsClientSecret;
+    APIs.GOOGLE_MAPS.key         = config.gmKey;
 
     // bootstrap and start our application
-    FourSquareService.API.venue( "Poli" ).then(( data ) => console.warn(data));
+    // services first: register Google Maps (requires external script
+    // whereas FourSquare uses rest endpoints)
+
+    GoogleMapsService.init()
+        .then(() => {
+            PubSub.publish( Actions.SHOW_FEEDBACK, { title: "Success", message: "This is where you are standing."});
+        });
 };
