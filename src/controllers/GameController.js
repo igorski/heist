@@ -130,6 +130,11 @@ function updateWorld() {
  * delays the application doesn't show much change until data is available...
  */
 function handleBankSelect( bank ) {
+
+    // do not allow double visits if you already robbed this place
+    if ( hasVisited( bank )) {
+        return;
+    }
     FourSquareService.API.info( bank.id )
         .then(( data ) => {
 
@@ -153,12 +158,13 @@ function handleBankSelect( bank ) {
                 title: bank.name,
                 message: message,
                 optConfirm: () => {
-                    // award money, remove bank from the world and subtract gasoline
+                    // award money, set bank as visited and subtract gasoline
                     Player.money += reward;
-                    World.robbed.push( bank.id );
+                    World.visited.push( bank.id );
                     handleTravel( bank );
 
                     // the chase is on
+                    // TODO: move police car in your direction
 
                     // re-render world to reflect changes
                     updateWorld();
@@ -168,6 +174,12 @@ function handleBankSelect( bank ) {
 }
 
 function handleGasSelect( gas ) {
+
+    // do not allow double visits if you already purchased gas here
+    if ( hasVisited( gas )) {
+        return;
+    }
+
     FourSquareService.API.info( gas.id )
         .then(( data ) => {
 
@@ -204,6 +216,9 @@ function handleGasSelect( gas ) {
                     Player.radius *= reward;
                     Player.money  -= price;
 
+                    // set gas station as visited
+                    World.visited.push( gas.id );
+
                     // re-render world to reflect changes
                     updateWorld();
                 }
@@ -238,4 +253,25 @@ function handleTravel( venue ) {
 
     if ( Player.radius === 0 )
         PubSub.publish( Actions.GAME_OVER );
+
+    // update player location
+
+    Player.latitude  = venue.location.lat;
+    Player.longitude = venue.location.lng;
+
+    PubSub.publish( Actions.POSITION_PLAYER );
+}
+
+/**
+ * verify whether the player can interact with this venue
+ * again, will pop up a message if not
+ */
+function hasVisited( venue ) {
+    if ( World.visited.indexOf( venue.id ) === -1 ) {
+        return false;
+    }
+    PubSub.publish( Actions.SHOW_FEEDBACK, {
+        title: "", message: Copy.GAME.STATE.visited
+    });
+    return true;
 }

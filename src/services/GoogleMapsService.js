@@ -55,7 +55,8 @@ const init = () => {
 
                 [
                     Actions.FLUSH_ALL_MARKERS,
-                    Actions.CREATE_MARKERS
+                    Actions.CREATE_MARKERS,
+                    Actions.POSITION_PLAYER
 
                 ].forEach(( message ) => PubSub.subscribe( message, handleBroadcast ));
 
@@ -99,11 +100,19 @@ function handleBroadcast( message, payload ) {
              });
             payload.banks.forEach(( bank ) => {
                 // only show banks that haven't been robbed yet.
-                if ( World.robbed.indexOf( bank.id ) === -1 )
+                if ( World.visited.indexOf( bank.id ) === -1 )
                     createMarkerFromVenue( bank, Actions.GAME_BANK_SELECT, Assets.BANK );
             });
             payload.gas.forEach(( gas ) => {
                 createMarkerFromVenue( gas, Actions.GAME_GAS_SELECT, Assets.GAS );
+            });
+            break;
+
+        case Actions.POSITION_PLAYER:
+
+            player.setPosition({
+                lat: Player.latitude,
+                lng: Player.longitude
             });
             break;
     }

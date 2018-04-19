@@ -14,9 +14,9 @@ const Player = {
 
 const World = {
 
-    // list of all robbed banks (FourSquare venue IDs)
+    // list of all robbed banks and used gas stations (FourSquare venue IDs)
 
-    robbed: []
+    visited: []
 };
 
 export { Player, World };

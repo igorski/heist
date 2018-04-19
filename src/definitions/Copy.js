@@ -18,7 +18,8 @@ const Copy = {
             gas: "Would you like to purchase {G} liters of gasoline at {A} for the price of {$} ?"
         },
         STATE: {
-            funds: "Not enough money!"
+            funds: "Not enough money!",
+            visited: "There is nothing left for you to do here."
         },
         OVER: {
             title: "GAME OVER",

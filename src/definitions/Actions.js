@@ -28,7 +28,8 @@ const Actions = {
     // map related
 
     FLUSH_ALL_MARKERS: "M0",
-    CREATE_MARKERS   : "M1"  // payload { banks: Array<Object>, police: Array<Object>, gas: Array<Object> }
+    CREATE_MARKERS   : "M1", // payload { banks: Array<Object>, police: Array<Object>, gas: Array<Object> }
+    POSITION_PLAYER  : "M2"
 };
 
 export { Actions };

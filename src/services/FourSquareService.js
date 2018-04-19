@@ -69,7 +69,7 @@ function fetch( url ) {
                 resolve( result.data.response );
             })
             .catch(( error ) => {
-                handleError( error );
+                handleError( error, reject );
             });
     });
 }
