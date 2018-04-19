@@ -3,7 +3,8 @@
 // not loaded on-demand (see TemplateService)
 
 const Templates = {
-    MESSAGE_DIALOG: require( "ejs-compiled-loader!../../assets/templates/message.ejs" )
+    MESSAGE_DIALOG: require( "ejs-compiled-loader!../../assets/templates/message.ejs" ),
+    STATS_DISPLAY: require( "ejs-compiled-loader!../../assets/templates/stats.ejs" )
 };
 
 // configurations for third party APIs

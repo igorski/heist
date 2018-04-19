@@ -6,7 +6,7 @@ const PubSub = require( "pubsub-js" );
 
 const ENDPOINT = "https://api.foursquare.com/v2/";
 const QUERY_OPTIONS = {
-    limit: 50,          // default amount of results
+    limit: 100,         // max amount of results
     v: "20180323"       // default API version to use
 };
 
@@ -18,12 +18,29 @@ const API = {
      * @see https://developer.foursquare.com/docs/api/venues/search
      *
      * @param {string} type
+     * @param {string=} optCategoryId;
      * @return {Promise}
      */
-    venue( type ) {
-        return fetch( getEndpoint( "venues/search", {
+    venues( type, optCategoryId ) {
+        const params = {
             query: type
-        }));
+        };
+        if ( typeof optCategoryId === "string" )
+            params.categoryId = optCategoryId;
+
+        return fetch( getEndpoint( "venues/search", params ));
+    },
+
+    /**
+     * get all data associated with given venue
+     *
+     * @see https://developer.foursquare.com/docs/api/venues/details
+     *
+     * @param {string} venueId
+     * @returns {Promise}
+     */
+    info( venueId ) {
+        return fetch( getEndpoint( `venues/${venueId}` ));
     }
 };
 

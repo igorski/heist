@@ -2,7 +2,7 @@ import { APIs, Styling } from '../config/Config';
 import { Actions } from '../definitions/Actions';
 import { Copy } from '../definitions/Copy';
 import { Assets } from '../definitions/Resources';
-import { Player } from '../model/Game';
+import { Player, World } from '../model/Game';
 
 const ENDPOINT = "https://maps.googleapis.com/maps/api/js";
 const ScriptLoader = require( "tiny-script-loader/loadScript" );
@@ -90,15 +90,20 @@ function handleBroadcast( message, payload ) {
 
 
         // create and render all Markers for all non-Player related content
-        // (e.g. the Banks and the Police)
+        // (e.g. the Banks, Police and Gas stations)
 
         case Actions.CREATE_MARKERS:
 
             payload.police.forEach(( police ) => {
-                createMarkerFromVenue( police, Assets.POLICE );
+                createMarkerFromVenue( police, Actions.GAME_POLICE_SELECT, Assets.POLICE );
              });
             payload.banks.forEach(( bank ) => {
-                createMarkerFromVenue( bank, Assets.BANK );
+                // only show banks that haven't been robbed yet.
+                if ( World.robbed.indexOf( bank.id ) === -1 )
+                    createMarkerFromVenue( bank, Actions.GAME_BANK_SELECT, Assets.BANK );
+            });
+            payload.gas.forEach(( gas ) => {
+                createMarkerFromVenue( gas, Actions.GAME_GAS_SELECT, Assets.GAS );
             });
             break;
     }
@@ -106,21 +111,19 @@ function handleBroadcast( message, payload ) {
 
 /**
  * Formats a FourSquare venue data Object into a Google Maps Marker
- * and push it into the Marker list
+ * and pushes it into the Marker list
  *
  * @see https://developer.foursquare.com/docs/api/venues/details
  *
  * @param {Object} venue
- * @param {string} iconURL
+ * @param {string} action to broadcast when Marker is clicked
+ *                 payload will be given venue
+ * @param {string} iconURL for the Marker
  */
-function createMarkerFromVenue( venue, iconURL ) {
+function createMarkerFromVenue( venue, action, iconURL ) {
     markers.push( addMarker(
         venue.location.lat, venue.location.lng,
-        // click handler
-        () => {
-            console.warn( venue.name + " " + venue.location.address );
-        },
-        iconURL
+        () => PubSub.publish( action, venue ), iconURL
     ));
 }
 
@@ -158,4 +161,3 @@ function addMarker( latitude, longitude, optClickHandler, optIcon ) {
 
     return marker;
 }
-

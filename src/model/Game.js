@@ -6,10 +6,17 @@ const Player = {
     longitude: 4.892639,
 
     // radius in meters
-    radius: 250,
+    radius: 1000,
 
-    // the Players cash-flow
-    money: 0
+    // the Players cash-flow in euros
+    money: 50
 };
 
-export { Player };
+const World = {
+
+    // list of all robbed banks (FourSquare venue IDs)
+
+    robbed: []
+};
+
+export { Player, World };

@@ -6,7 +6,7 @@ const PubSub = require("pubsub-js");
 
 /* variables */
 
-let container, wrapper, confirmBtn;
+let container, wrapper, confirmBtn, cancelBtn, confirmHandler;
 
 export function init() {
 
@@ -23,10 +23,12 @@ export function init() {
     container  = document.querySelector( "#feedback" );
     wrapper    = container.querySelector( ".content" );
     confirmBtn = container.querySelector( ".confirm" );
+    cancelBtn  = container.querySelector( ".cancel" );
 
     // add event listeners
 
     confirmBtn.addEventListener( "click", closeDialog );
+    cancelBtn.addEventListener ( "click", closeDialog );
 }
 
 /* internal methods */
@@ -39,6 +41,18 @@ function handleBroadcast( message, payload ) {
         case Actions.SHOW_FEEDBACK:
             openDialog( payload.title || "Message", payload.message );
             confirmBtn.classList.remove( "hidden" );
+
+            // grab a reference to the optional handler to be executed on confirmation
+
+            confirmHandler = payload.optConfirm;
+
+            // in case a confirmation handler was specified, show the cancel button
+            // if there is no confirmation handler, there will simply be a button for dialog dismissal
+
+            if ( confirmHandler )
+                cancelBtn.classList.remove( "hidden" );
+            else
+                cancelBtn.classList.add( "hidden" );
             break;
 
         // everything is going wrong error message
@@ -57,6 +71,11 @@ function openDialog( titleText, bodyText ) {
     container.classList.add( "visible" );
 }
 
-function closeDialog() {
+function closeDialog( e ) {
     container.classList.remove( "visible" );
+
+    if ( e.target === confirmBtn && typeof confirmHandler === "function" )
+        confirmHandler();
+
+    confirmHandler = null;
 }
