@@ -7,3 +7,33 @@ html {
 *, *:before, *:after {
     box-sizing: inherit;
 }
+
+/* custom styles */
+
+body {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+// modal window for user feedback message
+
+#feedback {
+    // invisible until toggled
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    max-width: 50%;
+    height: auto;
+    overflow: hidden;
+    transform: translate(-50%, -50%);
+    background-color: #FFF;
+    border: 2px solid #000;
+    border-radius: 7px;
+    padding: 1em;
+
+    &.visible {
+        display: block;
+    }
+}

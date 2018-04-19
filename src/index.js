@@ -2,10 +2,18 @@
 import 'styles/index.scss';
 
 import { Templates } from './config/Config';
+import { Actions } from './definitions/Actions';
 
-// application bootstrap
+// require all of our applications core actors
+// e.g. all individual controllers, services and the pubsub-js
+// to setup the publish-subscribe messaging system
+// to communicate state changes
 
-const container = document.querySelector("#application");
-import * as TemplateService from './services/TemplateService';
+import { init as SystemControllerInit } from './controllers/SystemController';
+const PubSub = require("pubsub-js");
 
-TemplateService.append( Templates.FOO, container, { title: "Hello there." });
+// initialize all actors
+
+SystemControllerInit();
+
+PubSub.publish( Actions.SHOW_FEEDBACK, { title: "Hello", message: "Sup?" });
