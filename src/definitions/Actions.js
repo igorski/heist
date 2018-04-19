@@ -8,8 +8,20 @@
  * @enum {string}
  */
 const Actions = {
-    SHOW_FEEDBACK: "A0", // payload { title: string, message: string }
-    SHOW_ERROR   : "A1"  // payload { message: string }
+
+    // "system" messages (e.g. broadcasting feedback/Error states)
+
+    SHOW_FEEDBACK : "A0", // payload { message: string }
+    SHOW_ERROR    : "A1",  // payload { message: string }
+
+    // game related
+
+    // map related
+
+    FLUSH_ALL_MARKERS: "M0",
+    CREATE_MARKERS   : "M1"  // payload { banks: Array<Object>, police: Array<Object> }
+
+
 };
 
 export { Actions };

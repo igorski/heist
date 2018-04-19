@@ -13,6 +13,28 @@ html {
 body {
     font-size: 16px;
     line-height: 1.5;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+}
+
+// generic/shared styles
+
+.hidden {
+    display: none;
+}
+
+button {
+    padding: .5em 1em;
+    background-color: #FFF;
+    color: #000;
+    border-radius: 7px;
+    border: 2px solid #000;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+        color: #FFF;
+        background-color: #000;
+    }
 }
 
 // modal window for user feedback message
@@ -35,6 +57,12 @@ body {
 
     &.visible {
         display: block;
+    }
+
+    .content {
+        h1 {
+            margin: 0;
+        }
     }
 }
 

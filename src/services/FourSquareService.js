@@ -1,5 +1,6 @@
 import { APIs } from '../config/Config';
 import { Actions } from '../definitions/Actions';
+import { Player } from '../model/Game';
 const Axios  = require( "axios" );
 const PubSub = require( "pubsub-js" );
 
@@ -74,8 +75,8 @@ function getEndpoint( route, optParams = {} ) {
     // specify Players current position and total range
 
     optParams = Object.assign( optParams, {
-        ll: "4.895168, 52.370216",      // Amsterdam
-        radius: 500 // in meters
+        ll: `${Player.latitude}, ${Player.longitude}`,
+        radius: `${Player.radius}`
     });
 
     // apply default options for API version and limit of results

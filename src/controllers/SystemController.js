@@ -6,7 +6,7 @@ const PubSub = require("pubsub-js");
 
 /* variables */
 
-let container, wrapper;
+let container, wrapper, confirmBtn;
 
 export function init() {
 
@@ -20,8 +20,13 @@ export function init() {
 
     // get reference to DOM Elements
 
-    container = document.querySelector( "#feedback" );
-    wrapper   = container.querySelector( ".content" );
+    container  = document.querySelector( "#feedback" );
+    wrapper    = container.querySelector( ".content" );
+    confirmBtn = container.querySelector( ".confirm" );
+
+    // add event listeners
+
+    confirmBtn.addEventListener( "click", closeDialog );
 }
 
 /* internal methods */
@@ -33,11 +38,14 @@ function handleBroadcast( message, payload ) {
         // generic feedback message
         case Actions.SHOW_FEEDBACK:
             openDialog( payload.title || "Message", payload.message );
+            confirmBtn.classList.remove( "hidden" );
             break;
 
         // everything is going wrong error message
         case Actions.SHOW_ERROR:
             openDialog( "Error", payload.message );
+            // do not allow dismissal when an Error has occurred
+            confirmBtn.classList.add( "hidden" );
             break;
     }
 }

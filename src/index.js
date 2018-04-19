@@ -10,9 +10,11 @@ import { Actions } from './definitions/Actions';
 // to communicate state changes
 
 import { init as SystemControllerInit } from './controllers/SystemController';
-import * as FourSquareService from './services/FourSquareService';
+import { init as GameControllerInit } from './controllers/GameController';
 import * as GoogleMapsService from './services/GoogleMapsService';
 const PubSub = require("pubsub-js");
+
+// initialize all actors
 
 SystemControllerInit();
 
@@ -55,6 +57,10 @@ window.init = ( config ) => {
 
     GoogleMapsService.init()
         .then(() => {
-            PubSub.publish( Actions.SHOW_FEEDBACK, { title: "Success", message: "This is where you are standing."});
+
+            // start the game, yo!
+
+            GameControllerInit();
         });
 };
+window.ps = PubSub; // debug helper
