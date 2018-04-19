@@ -6,4 +6,13 @@ const Templates = {
     MESSAGE_DIALOG: require( "ejs-compiled-loader!../../assets/templates/message.ejs" )
 };
 
-export { Templates };
+// configurations for third party APIs
+
+const APIs = {
+    FOURSQUARE: {
+        clientId: "",
+        clientSecret: ""
+    }
+};
+
+export { Templates, APIs };
